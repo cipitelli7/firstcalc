@@ -30,6 +30,9 @@ def raiz_quadrada(a):
         return "Erro: não é possível calcular a raiz quadrada de um número negativo. O resultado da raiz quadrada de números negativos é um número complexo."
     return math.sqrt(a)
 
+def raiz_cubica(a):
+    return a ** (1/3)  # Calcula a raiz cúbica
+
 # Função principal que solicita ao usuário as operações
 def main():
     print("Calculadora Avançada")
@@ -41,18 +44,22 @@ def main():
         print("3. Multiplicação")
         print("4. Divisão")
         print("5. Raiz Quadrada")
-        print("6. Sair")
+        print("6. Raiz Cúbica")
+        print("7. Sair")
 
         try:
             opcao = int(input("\nDigite o número da operação: "))
 
-            if opcao == 6:
+            if opcao == 7:
                 print("Saindo da calculadora. Até logo!")
                 break
 
             if opcao == 5:
                 num1 = float(input("\nDigite o número para calcular a raiz quadrada: "))
                 print(f"A raiz quadrada de {num1} é: {raiz_quadrada(num1)}")
+            elif opcao == 6:
+                num1 = float(input("\nDigite o número para calcular a raiz cúbica: "))
+                print(f"A raiz cúbica de {num1} é: {raiz_cubica(num1)}")
             else:
                 # Solicitar ao usuário os números
                 numeros = []
@@ -84,7 +91,7 @@ def main():
                     resultado = dividir(*numeros)
                     print(f"O resultado da divisão é: {resultado}")
                 else:
-                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 6.")
+                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 7.")
 
         except ValueError:
             print("Por favor, digite apenas números válidos.")
