@@ -27,7 +27,7 @@ def dividir(*args):
 
 def raiz_quadrada(a):
     if a < 0:
-        return "Erro: não é possível calcular a raiz quadrada de um número negativo."
+        return "Erro: não é possível calcular a raiz quadrada de um número negativo. O resultado da raiz quadrada de números negativos é um número complexo."
     return math.sqrt(a)
 
 # Função principal que solicita ao usuário as operações
@@ -60,8 +60,8 @@ def main():
                 while True:
                     entrada = input("Digite um número: ")
                     if entrada.lower() == 'fim':
-                        if len(numeros) < 2:
-                            print("É necessário inserir pelo menos dois números para realizar a operação.")
+                        if len(numeros) < 2 and opcao in [1, 3, 4]:  # Soma, Multiplicação e Divisão precisam de pelo menos 2 números
+                            print("É necessário inserir pelo menos dois números para realizar essa operação.")
                             continue
                         break
                     try:
@@ -84,7 +84,7 @@ def main():
                     resultado = dividir(*numeros)
                     print(f"O resultado da divisão é: {resultado}")
                 else:
-                    print("Opção inválida. Tente novamente.")
+                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 6.")
 
         except ValueError:
             print("Por favor, digite apenas números válidos.")
@@ -92,4 +92,3 @@ def main():
 # Chamando a função principal
 if __name__ == "__main__":
     main()
-
