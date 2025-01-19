@@ -33,6 +33,9 @@ def raiz_quadrada(a):
 def raiz_cubica(a):
     return a ** (1/3)  # Calcula a raiz cúbica
 
+def calcular_percentual(valor, percentual):
+    return (valor * percentual) / 100  # Cálculo de porcentagem
+
 # Função principal que solicita ao usuário as operações
 def main():
     print("Calculadora Avançada")
@@ -45,12 +48,13 @@ def main():
         print("4. Divisão")
         print("5. Raiz Quadrada")
         print("6. Raiz Cúbica")
-        print("7. Sair")
+        print("7. Cálculo de Porcentagem")
+        print("8. Sair")
 
         try:
             opcao = int(input("\nDigite o número da operação: "))
 
-            if opcao == 7:
+            if opcao == 8:
                 print("Saindo da calculadora. Até logo!")
                 break
 
@@ -60,6 +64,11 @@ def main():
             elif opcao == 6:
                 num1 = float(input("\nDigite o número para calcular a raiz cúbica: "))
                 print(f"A raiz cúbica de {num1} é: {raiz_cubica(num1)}")
+            elif opcao == 7:
+                valor = float(input("\nDigite o valor: "))
+                percentual = float(input("Digite a porcentagem: "))
+                resultado = calcular_percentual(valor, percentual)
+                print(f"O valor de {percentual}% de {valor} é: {resultado}")
             else:
                 # Solicitar ao usuário os números
                 numeros = []
@@ -91,7 +100,7 @@ def main():
                     resultado = dividir(*numeros)
                     print(f"O resultado da divisão é: {resultado}")
                 else:
-                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 7.")
+                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 8.")
 
         except ValueError:
             print("Por favor, digite apenas números válidos.")
