@@ -1,5 +1,3 @@
-import tkinter as tk
-from tkinter import messagebox
 import math
 
 # Funções para as operações
@@ -33,124 +31,80 @@ def raiz_quadrada(a):
     return math.sqrt(a)
 
 def raiz_cubica(a):
-    return a ** (1/3)
+    return a ** (1/3)  # Calcula a raiz cúbica
 
 def calcular_percentual(valor, percentual):
-    return (valor * percentual) / 100
+    return (valor * percentual) / 100  # Cálculo de porcentagem
 
-# Função para atualizar o resultado
-def atualizar_resultado(resultado):
-    resultado_label.config(text=f"Resultado: {resultado}")
+# Função principal que solicita ao usuário as operações
+def main():
+    print("Calculadora Avançada")
 
-# Função de soma
-def soma():
-    try:
-        numeros = [float(entry.get()) for entry in entradas]
-        resultado = somar(*numeros)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira números válidos.")
+    while True:
+        print("\nEscolha a operação desejada:")
+        print("1. Soma")
+        print("2. Subtração")
+        print("3. Multiplicação")
+        print("4. Divisão")
+        print("5. Raiz Quadrada")
+        print("6. Raiz Cúbica")
+        print("7. Cálculo de Porcentagem")
+        print("8. Sair")
 
-# Função de subtração
-def subtracao():
-    try:
-        numeros = [float(entry.get()) for entry in entradas]
-        resultado = subtrair(*numeros)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira números válidos.")
+        try:
+            opcao = int(input("\nDigite o número da operação: "))
 
-# Função de multiplicação
-def multiplicacao():
-    try:
-        numeros = [float(entry.get()) for entry in entradas]
-        resultado = multiplicar(*numeros)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira números válidos.")
+            if opcao == 8:
+                print("Saindo da calculadora. Até logo!")
+                break
 
-# Função de divisão
-def divisao():
-    try:
-        numeros = [float(entry.get()) for entry in entradas]
-        resultado = dividir(*numeros)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira números válidos.")
+            if opcao == 5:
+                num1 = float(input("\nDigite o número para calcular a raiz quadrada: "))
+                print(f"A raiz quadrada de {num1} é: {raiz_quadrada(num1)}")
+            elif opcao == 6:
+                num1 = float(input("\nDigite o número para calcular a raiz cúbica: "))
+                print(f"A raiz cúbica de {num1} é: {raiz_cubica(num1)}")
+            elif opcao == 7:
+                valor = float(input("\nDigite o valor: "))
+                percentual = float(input("Digite a porcentagem: "))
+                resultado = calcular_percentual(valor, percentual)
+                print(f"O valor de {percentual}% de {valor} é: {resultado}")
+            else:
+                # Solicitar ao usuário os números
+                numeros = []
+                print("\nDigite os números (digite 'fim' para encerrar):")
+                while True:
+                    entrada = input("Digite um número: ")
+                    if entrada.lower() == 'fim':
+                        if len(numeros) < 2 and opcao in [1, 3, 4]:  # Soma, Multiplicação e Divisão precisam de pelo menos 2 números
+                            print("É necessário inserir pelo menos dois números para realizar essa operação.")
+                            continue
+                        break
+                    try:
+                        numero = float(entrada)
+                        numeros.append(numero)
+                    except ValueError:
+                        print("Por favor, digite um número válido.")
+                
+                # Realizar a operação escolhida
+                if opcao == 1:
+                    resultado = somar(*numeros)
+                    print(f"O resultado da soma é: {resultado}")
+                elif opcao == 2:
+                    resultado = subtrair(*numeros)
+                    print(f"O resultado da subtração é: {resultado}")
+                elif opcao == 3:
+                    resultado = multiplicar(*numeros)
+                    print(f"O resultado da multiplicação é: {resultado}")
+                elif opcao == 4:
+                    resultado = dividir(*numeros)
+                    print(f"O resultado da divisão é: {resultado}")
+                else:
+                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 8.")
 
-# Função de raiz quadrada
-def raiz_quadrada_func():
-    try:
-        num = float(entry.get())
-        resultado = raiz_quadrada(num)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira um número válido.")
+        except ValueError:
+            print("Por favor, digite apenas números válidos.")
 
-# Função de raiz cúbica
-def raiz_cubica_func():
-    try:
-        num = float(entry.get())
-        resultado = raiz_cubica(num)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira um número válido.")
-
-# Função de cálculo de porcentagem
-def percentual_func():
-    try:
-        valor = float(entry.get())
-        percentual = float(entry_percentual.get())
-        resultado = calcular_percentual(valor, percentual)
-        atualizar_resultado(resultado)
-    except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira números válidos.")
-
-# Função principal para criar a janela
-def criar_interface():
-    global entradas, entry, entry_percentual, resultado_label
-    root = tk.Tk()
-    root.title("Calculadora Avançada")
-
-    # Tela de entrada
-    entradas = []
-    for i in range(3):  # 3 campos de entrada
-        entry = tk.Entry(root)
-        entry.grid(row=0, column=i)
-        entradas.append(entry)
-
-    # Label para exibir o resultado
-    resultado_label = tk.Label(root, text="Resultado: ", font=("Arial", 14))
-    resultado_label.grid(row=4, column=0, columnspan=3)
-
-    # Botões de operação
-    btn_soma = tk.Button(root, text="Soma", command=soma)
-    btn_soma.grid(row=1, column=0)
-
-    btn_subtracao = tk.Button(root, text="Subtração", command=subtracao)
-    btn_subtracao.grid(row=1, column=1)
-
-    btn_multiplicacao = tk.Button(root, text="Multiplicação", command=multiplicacao)
-    btn_multiplicacao.grid(row=1, column=2)
-
-    btn_divisao = tk.Button(root, text="Divisão", command=divisao)
-    btn_divisao.grid(row=2, column=0)
-
-    btn_raiz_quadrada = tk.Button(root, text="Raiz Quadrada", command=raiz_quadrada_func)
-    btn_raiz_quadrada.grid(row=2, column=1)
-
-    btn_raiz_cubica = tk.Button(root, text="Raiz Cúbica", command=raiz_cubica_func)
-    btn_raiz_cubica.grid(row=2, column=2)
-
-    entry_percentual = tk.Entry(root)
-    entry_percentual.grid(row=3, column=0)
-    
-    btn_percentual = tk.Button(root, text="Percentual", command=percentual_func)
-    btn_percentual.grid(row=3, column=1)
-
-    # Rodar a interface
-    root.mainloop()
-
-# Chamar a função para criar a interface
+# Chamando a função principal
 if __name__ == "__main__":
-    criar_interface()
+    main()
