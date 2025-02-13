@@ -42,41 +42,46 @@ def calcular_percentual(valor, percentual):
 def exibir_resultado(resultado):
     label_resultado.config(text=f"Resultado: {resultado}")
 
-# Função para pegar o valor dos campos e realizar a operação
+# Função para pegar os valores dos campos e realizar a operação
 def realizar_operacao(opcao):
     try:
-        valor1 = float(entry_num1.get())
-        if opcao != 5:  # Operações de raiz não precisam de dois valores
-            valor2 = float(entry_num2.get())
-        else:
-            valor2 = None
-
+        # Pegando os números inseridos
+        entrada = entry_numeros.get()
+        numeros = [float(num) for num in entrada.split()]  # Convertendo os números separados por espaço
+        
         if opcao == 1:  # Soma
-            resultado = somar(valor1, valor2)
+            resultado = somar(*numeros)
         elif opcao == 2:  # Subtração
-            resultado = subtrair(valor1, valor2)
+            resultado = subtrair(*numeros)
         elif opcao == 3:  # Multiplicação
-            resultado = multiplicar(valor1, valor2)
+            resultado = multiplicar(*numeros)
         elif opcao == 4:  # Divisão
-            resultado = dividir(valor1, valor2)
-        elif opcao == 5:  # Raiz Quadrada
-            resultado = raiz_quadrada(valor1)
-        elif opcao == 6:  # Raiz Cúbica
-            resultado = raiz_cubica(valor1)
-        elif opcao == 7:  # Cálculo de Porcentagem
-            percentual = float(entry_num2.get())
-            resultado = calcular_percentual(valor1, percentual)
+            resultado = dividir(*numeros)
+        elif opcao == 5:  # Raiz Quadrada (apenas um número)
+            if len(numeros) != 1:
+                resultado = "Por favor, insira apenas um número para a raiz quadrada."
+            else:
+                resultado = raiz_quadrada(numeros[0])
+        elif opcao == 6:  # Raiz Cúbica (apenas um número)
+            if len(numeros) != 1:
+                resultado = "Por favor, insira apenas um número para a raiz cúbica."
+            else:
+                resultado = raiz_cubica(numeros[0])
+        elif opcao == 7:  # Cálculo de Porcentagem (do primeiro número)
+            if len(numeros) != 2:
+                resultado = "Por favor, insira dois números para calcular a porcentagem."
+            else:
+                resultado = calcular_percentual(numeros[0], numeros[1])
         else:
             resultado = "Operação inválida."
 
         exibir_resultado(resultado)
     except ValueError:
-        messagebox.showerror("Erro", "Por favor, insira números válidos.")
+        messagebox.showerror("Erro", "Por favor, insira números válidos separados por espaço.")
 
 # Função para limpar os campos
 def limpar():
-    entry_num1.delete(0, tk.END)
-    entry_num2.delete(0, tk.END)
+    entry_numeros.delete(0, tk.END)
     label_resultado.config(text="Resultado: ")
 
 # Criando a janela principal
@@ -85,17 +90,11 @@ janela.title("Calculadora Avançada")
 janela.geometry("400x400")
 
 # Labels e entradas
-label_num1 = tk.Label(janela, text="Número 1:")
-label_num1.pack()
+label_numeros = tk.Label(janela, text="Digite os números (separados por espaço):")
+label_numeros.pack()
 
-entry_num1 = tk.Entry(janela)
-entry_num1.pack()
-
-label_num2 = tk.Label(janela, text="Número 2 (se aplicável):")
-label_num2.pack()
-
-entry_num2 = tk.Entry(janela)
-entry_num2.pack()
+entry_numeros = tk.Entry(janela)
+entry_numeros.pack()
 
 # Botões de operação
 botao_somar = tk.Button(janela, text="Soma", command=lambda: realizar_operacao(1))
@@ -123,9 +122,4 @@ botao_percentual.pack()
 botao_limpar = tk.Button(janela, text="Limpar", command=limpar)
 botao_limpar.pack()
 
-# Label para mostrar o resultado
-label_resultado = tk.Label(janela, text="Resultado: ")
-label_resultado.pack()
-
-# Iniciar o loop da interface gráfica
-janela.mainloop()
+# Label pa
