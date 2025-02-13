@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import messagebox
 import math
 
 # Funções para as operações
@@ -27,84 +29,103 @@ def dividir(*args):
 
 def raiz_quadrada(a):
     if a < 0:
-        return "Erro: não é possível calcular a raiz quadrada de um número negativo. O resultado da raiz quadrada de números negativos é um número complexo."
+        return "Erro: não é possível calcular a raiz quadrada de um número negativo."
     return math.sqrt(a)
 
 def raiz_cubica(a):
-    return a ** (1/3)  # Calcula a raiz cúbica
+    return a ** (1/3)
 
 def calcular_percentual(valor, percentual):
-    return (valor * percentual) / 100  # Cálculo de porcentagem
+    return (valor * percentual) / 100
 
-# Função principal que solicita ao usuário as operações
-def main():
-    print("Calculadora Avançada")
+# Função para exibir o resultado
+def exibir_resultado(resultado):
+    label_resultado.config(text=f"Resultado: {resultado}")
 
-    while True:
-        print("\nEscolha a operação desejada:")
-        print("1. Soma")
-        print("2. Subtração")
-        print("3. Multiplicação")
-        print("4. Divisão")
-        print("5. Raiz Quadrada")
-        print("6. Raiz Cúbica")
-        print("7. Cálculo de Porcentagem")
-        print("8. Sair")
+# Função para pegar o valor dos campos e realizar a operação
+def realizar_operacao(opcao):
+    try:
+        valor1 = float(entry_num1.get())
+        if opcao != 5:  # Operações de raiz não precisam de dois valores
+            valor2 = float(entry_num2.get())
+        else:
+            valor2 = None
 
-        try:
-            opcao = int(input("\nDigite o número da operação: "))
+        if opcao == 1:  # Soma
+            resultado = somar(valor1, valor2)
+        elif opcao == 2:  # Subtração
+            resultado = subtrair(valor1, valor2)
+        elif opcao == 3:  # Multiplicação
+            resultado = multiplicar(valor1, valor2)
+        elif opcao == 4:  # Divisão
+            resultado = dividir(valor1, valor2)
+        elif opcao == 5:  # Raiz Quadrada
+            resultado = raiz_quadrada(valor1)
+        elif opcao == 6:  # Raiz Cúbica
+            resultado = raiz_cubica(valor1)
+        elif opcao == 7:  # Cálculo de Porcentagem
+            percentual = float(entry_num2.get())
+            resultado = calcular_percentual(valor1, percentual)
+        else:
+            resultado = "Operação inválida."
 
-            if opcao == 8:
-                print("Saindo da calculadora. Até logo!")
-                break
+        exibir_resultado(resultado)
+    except ValueError:
+        messagebox.showerror("Erro", "Por favor, insira números válidos.")
 
-            if opcao == 5:
-                num1 = float(input("\nDigite o número para calcular a raiz quadrada: "))
-                print(f"A raiz quadrada de {num1} é: {raiz_quadrada(num1)}")
-            elif opcao == 6:
-                num1 = float(input("\nDigite o número para calcular a raiz cúbica: "))
-                print(f"A raiz cúbica de {num1} é: {raiz_cubica(num1)}")
-            elif opcao == 7:
-                valor = float(input("\nDigite o valor: "))
-                percentual = float(input("Digite a porcentagem: "))
-                resultado = calcular_percentual(valor, percentual)
-                print(f"O valor de {percentual}% de {valor} é: {resultado}")
-            else:
-                # Solicitar ao usuário os números
-                numeros = []
-                print("\nDigite os números (digite 'fim' para encerrar):")
-                while True:
-                    entrada = input("Digite um número: ")
-                    if entrada.lower() == 'fim':
-                        if len(numeros) < 2 and opcao in [1, 3, 4]:  # Soma, Multiplicação e Divisão precisam de pelo menos 2 números
-                            print("É necessário inserir pelo menos dois números para realizar essa operação.")
-                            continue
-                        break
-                    try:
-                        numero = float(entrada)
-                        numeros.append(numero)
-                    except ValueError:
-                        print("Por favor, digite um número válido.")
-                
-                # Realizar a operação escolhida
-                if opcao == 1:
-                    resultado = somar(*numeros)
-                    print(f"O resultado da soma é: {resultado}")
-                elif opcao == 2:
-                    resultado = subtrair(*numeros)
-                    print(f"O resultado da subtração é: {resultado}")
-                elif opcao == 3:
-                    resultado = multiplicar(*numeros)
-                    print(f"O resultado da multiplicação é: {resultado}")
-                elif opcao == 4:
-                    resultado = dividir(*numeros)
-                    print(f"O resultado da divisão é: {resultado}")
-                else:
-                    print("Opção inválida. Por favor, digite uma opção válida de 1 a 8.")
+# Função para limpar os campos
+def limpar():
+    entry_num1.delete(0, tk.END)
+    entry_num2.delete(0, tk.END)
+    label_resultado.config(text="Resultado: ")
 
-        except ValueError:
-            print("Por favor, digite apenas números válidos.")
+# Criando a janela principal
+janela = tk.Tk()
+janela.title("Calculadora Avançada")
+janela.geometry("400x400")
 
-# Chamando a função principal
-if __name__ == "__main__":
-    main()
+# Labels e entradas
+label_num1 = tk.Label(janela, text="Número 1:")
+label_num1.pack()
+
+entry_num1 = tk.Entry(janela)
+entry_num1.pack()
+
+label_num2 = tk.Label(janela, text="Número 2 (se aplicável):")
+label_num2.pack()
+
+entry_num2 = tk.Entry(janela)
+entry_num2.pack()
+
+# Botões de operação
+botao_somar = tk.Button(janela, text="Soma", command=lambda: realizar_operacao(1))
+botao_somar.pack()
+
+botao_subtrair = tk.Button(janela, text="Subtração", command=lambda: realizar_operacao(2))
+botao_subtrair.pack()
+
+botao_multiplicar = tk.Button(janela, text="Multiplicação", command=lambda: realizar_operacao(3))
+botao_multiplicar.pack()
+
+botao_dividir = tk.Button(janela, text="Divisão", command=lambda: realizar_operacao(4))
+botao_dividir.pack()
+
+botao_raiz_quadrada = tk.Button(janela, text="Raiz Quadrada", command=lambda: realizar_operacao(5))
+botao_raiz_quadrada.pack()
+
+botao_raiz_cubica = tk.Button(janela, text="Raiz Cúbica", command=lambda: realizar_operacao(6))
+botao_raiz_cubica.pack()
+
+botao_percentual = tk.Button(janela, text="Cálculo de Porcentagem", command=lambda: realizar_operacao(7))
+botao_percentual.pack()
+
+# Botão de limpar
+botao_limpar = tk.Button(janela, text="Limpar", command=limpar)
+botao_limpar.pack()
+
+# Label para mostrar o resultado
+label_resultado = tk.Label(janela, text="Resultado: ")
+label_resultado.pack()
+
+# Iniciar o loop da interface gráfica
+janela.mainloop()
